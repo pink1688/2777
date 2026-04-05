@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全球旅人 | 獨角獸旅遊入口網 - 專業比價版</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --accent-color: #ff4e50;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; }
+        body { color: var(--text-color); line-height: 1.6; }
+
+        /* Header & Hero */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+            clip-path: ellipse(150% 100% at 50% 0%);
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        h1 { font-size: 3rem; margin-bottom: 10px; letter-spacing: 2px; }
+        
+        /* 搜尋比價區塊 */
+        #compare-section {
+            margin-top: -50px;
+            padding: 40px 0;
+        }
+
+        .search-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .search-group {
+            display: flex;
+            gap: 10px;
+            max-width: 700px;
+            margin: 20px auto;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 25px;
+            border: 2px solid #eee;
+            border-radius: 50px;
+            font-size: 18px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .search-input:focus { border-color: var(--secondary-color); }
+
+        .search-btn {
+            padding: 15px 40px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .search-btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(255,78,80,0.4); }
+
+        .agency-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .agency-label {
+            display: flex;
+            align-items: center;
+            background: #f0f2f5;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .agency-label:hover { background: #e2e6ea; }
+        .agency-label input { margin-right: 8px; }
+
+        /* 旅行社列表區塊 */
+        .section-title { text-align: center; margin: 60px 0 30px; font-size: 2rem; color: var(--primary-color); }
+        
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .partner-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .partner-card:hover { transform: translateY(-10px); }
+        .partner-card img { width: 100%; height: 180px; object-fit: cover; }
+        .partner-info { padding: 20px; text-align: center; }
+        .partner-info h3 { margin-bottom: 5px; color: #333; }
+
+        footer { background: #333; color: white; text-align: center; padding: 40px 0; margin-top: 60px; }
+
+        @media (max-width: 768px) {
+            .search-group { flex-direction: column; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <h1>Unicorn Travel</h1>
+        <p>開啟你的奇幻全球探索地圖</p>
+    </div>
+</header>
+
+<div class="container">
+    <section id="compare-section">
+        <div class="search-card">
+            <h2>全台旅行社即時比價搜尋</h2>
+            <p style="color: #666; margin-bottom: 10px;">輸入目的地，一次開啟各大旅行社搜尋結果（請允許彈出視窗）</p>
+            
+            <div class="search-group">
+                <input type="text" id="destination" class="search-input" placeholder="想去哪裡？例如：日本、北海道、韓國...">
+                <button onclick="startCompare()" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i> 立即比價</button>
+            </div>
+
+            <div class="agency-selector">
+                <label class="agency-label"><input type="checkbox" value="cola" checked> 可樂旅遊</label>
+                <label class="agency-label"><input type="checkbox" value="settour" checked> 東南旅遊</label>
+                <label class="agency-label"><input type="checkbox" value="ezfly" checked> 易飛網</label>
+                <label class="agency-label"><input type="checkbox" value="travel4u" checked> 山富旅遊</label>
+                <label class="agency-label"><input type="checkbox" value="lifetour" checked> 五福旅遊</label>
+            </div>
+        </div>
+    </section>
+
+    <h2 class="section-title">精選推薦旅行社</h2>
+    <div class="partners-grid">
+        <a href="https://www.settour.com.tw/" target="_blank" class="partner-card">
+            <img src="https://images.unsplash.com/photo-1488085061387-422e29b40080?auto=format&fit=crop&w=600&q=80" alt="東南旅遊">
+            <div class="partner-info"><h3>東南旅遊</h3><p>老牌口碑，服務多元</p></div>
+        </a>
+        <a href="https://www.colatour.com.tw/" target="_blank" class="partner-card">
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" alt="可樂旅遊">
+            <div class="partner-info"><h3>可樂旅遊</h3><p>行程最豐富，出團量大</p></div>
+        </a>
+        <a href="https://www.ezfly.com/" target="_blank" class="partner-card">
+            <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" alt="易飛網">
+            <div class="partner-info"><h3>易飛網</h3><p>小資首選，廉航特惠</p></div>
+        </a>
+        <a href="https://www.travel4u.com.tw/" target="_blank" class="partner-card">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="山富旅遊">
+            <div class="partner-info"><h3>山富旅遊</h3><p>日本線與遊輪專家</p></div>
+        </a>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <p>© 2026 UNICORN WORLD TRAVEL. 版權所有</p>
+    </div>
+</footer>
+
+<script>
+    function startCompare() {
+        const keyword = document.getElementById('destination').value.trim();
+        if (!keyword) {
+            alert('請輸入想搜尋的目的地（例如：日本）');
+            return;
+        }
+
+        // 定義各大旅行社的搜尋連結 URL 結構
+        const urls = {
+            cola: `https://www.colatour.com.tw/C10A_TourSell/C10A03_TourSearch.aspx?SearchKeyword=${encodeURIComponent(keyword)}`,
+            settour: `https://www.settour.com.tw/ec/gw/search/index.html?keyword=${encodeURIComponent(keyword)}`,
+            ezfly: `https://event.ezfly.com/mkt/search/?keyword=${encodeURIComponent(keyword)}`,
+            travel4u: `https://www.travel4u.com.tw/group/search/?keyword=${encodeURIComponent(keyword)}`,
+            lifetour: `https://www.lifetour.com.tw/search/?q=${encodeURIComponent(keyword)}`
+        };
+
+        const checkboxes = document.querySelectorAll('.agency-selector input[type="checkbox"]:checked');
+        
+        if (checkboxes.length === 0) {
+            alert('請至少勾選一家旅行社進行比價');
+            return;
+        }
+
+        // 提示使用者
+        alert('正在為您開啟選定的旅行社搜尋頁面，請記得「允許」瀏覽器彈出視窗。');
+
+        checkboxes.forEach((cb, index) => {
+            const key = cb.value;
+            if (urls[key]) {
+                // 使用 setTimeout 稍微錯開開啟時間，避免部分瀏覽器封鎖
+                setTimeout(() => {
+                    window.open(urls[key], '_blank');
+                }, index * 300); 
+            }
+        });
+    }
+
+    // 支援按下 Enter 鍵搜尋
+    document.getElementById('destination').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            startCompare();
+        }
+    });
+</script>
+
+</body>
+</html>
