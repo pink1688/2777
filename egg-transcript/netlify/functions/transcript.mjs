@@ -3,7 +3,19 @@ import { fetchTranscript } from 'youtube-transcript';
 const headers={'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff'};
 const reply=(status,body)=>new Response(JSON.stringify(body),{status,headers});
 function clean(s){return String(s??'').replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").trim().slice(0,800)}
-function convert(rows,key,divisor){return (Array.isArray(rows)?rows:[]).slice(0,15000).map(x=>({start:Number.isFinite(Number(x[key]))?Math.max(0,Number(x[key])/divisor):null,text:clean(x.text)})).filter(x=>x.text&&(x.start===null||x.start<36000))}
+function convert(rows,key,divisor){
+ const samples=Array.isArray(rows)?rows.slice(0,100):[];
+ // youtube-transcript v1.3.1 srv3 offsets are milliseconds; older classic XML tracks use seconds.
+ // Use durations to distinguish them without breaking the first few timestamps.
+ const durationSamples=samples.map(x=>Number(x.duration)).filter(x=>Number.isFinite(x)&&x>0).sort((a,b)=>a-b);
+ const medianDuration=durationSamples.length?durationSamples[Math.floor(durationSamples.length/2)]:null;
+ const maxOffset=Math.max(0,...samples.map(x=>Number(x[key])||0));
+ const resolvedDivisor=key==='offset'&&((medianDuration!==null&&medianDuration>100)||maxOffset>36000)?1000:divisor;
+ return (Array.isArray(rows)?rows:[]).slice(0,15000).map(x=>({
+  start:Number.isFinite(Number(x[key]))?Math.max(0,Number(x[key])/resolvedDivisor):null,
+  text:clean(x.text)
+ })).filter(x=>x.text&&(x.start===null||x.start<36000));
+}
 function blocked(t){return /LOGIN_REQUIRED|Sign in|not a bot|confirm.*bot|403|429|rate limit|thrott/i.test(t)}
 function restricted(t){return /private|members.only|unavailable|deleted|not playable/i.test(t)}
 export default async function handler(request){
